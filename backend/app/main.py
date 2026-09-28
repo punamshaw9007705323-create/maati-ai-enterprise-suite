@@ -213,7 +213,6 @@ def load_model():
         return None, None
 
     try:
-
         from transformers import (
             AutoImageProcessor,
             AutoModelForImageClassification
@@ -232,8 +231,11 @@ def load_model():
         return _model, _processor
 
     except Exception as exc:
+        import traceback
 
         _model_error = str(exc)
+        print("DISEASE MODEL LOAD ERROR:", exc)
+        traceback.print_exc()
 
         return None, None
 
