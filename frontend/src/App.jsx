@@ -863,7 +863,7 @@ export default function App() {
     setLoginLoading(true);
     setLoginError('');
     try {
-      const res = await fetch('http://127.0.0.1:8000/api/v1/auth/login', {
+      const res = await fetch('https://maati-ai-backend.onrender.com/api/v1/auth/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ username, password, role: loginForm.role })
