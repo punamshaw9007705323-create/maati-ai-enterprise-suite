@@ -1,0 +1,2530 @@
+
+/* =========================================================
+   MAATI AI ENTERPRISE SUITE
+   ADVANCED CINEMATIC AGRI-TECH UI
+   React / Vite / Plain CSS
+   ========================================================= */
+
+/* =========================================================
+   01. DESIGN TOKENS
+   ========================================================= */
+
+:root {
+  --maati-green: #52f28a;
+  --maati-green-bright: #9affbd;
+  --maati-green-soft: rgba(82, 242, 138, 0.14);
+  --maati-green-glow: rgba(82, 242, 138, 0.32);
+
+  --maati-blue: #48c7ff;
+  --maati-blue-soft: rgba(72, 199, 255, 0.14);
+
+  --maati-gold: #e3c76d;
+
+  --maati-bg: #020c07;
+  --maati-bg-2: #04180d;
+  --maati-bg-3: #062516;
+
+  --maati-white: #f5fff8;
+  --maati-text: rgba(235, 250, 240, 0.82);
+  --maati-muted: rgba(211, 236, 220, 0.62);
+
+  --maati-border: rgba(137, 255, 178, 0.18);
+  --maati-border-strong: rgba(137, 255, 178, 0.34);
+
+  --maati-glass: rgba(4, 30, 17, 0.66);
+
+  --maati-radius: 24px;
+
+  --shadow-lg:
+    0 30px 100px rgba(0, 0, 0, 0.42);
+
+  --shadow-green:
+    0 0 45px rgba(82, 242, 138, 0.12);
+
+  --font-main:
+    Inter,
+    system-ui,
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    sans-serif;
+}
+
+
+/* =========================================================
+   02. GLOBAL RESET
+   ========================================================= */
+
+html {
+  min-height: 100%;
+  scroll-behavior: smooth;
+  background: var(--maati-bg);
+}
+
+body {
+  min-height: 100%;
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+
+  color: var(--maati-white);
+
+  font-family: var(--font-main);
+
+  background:
+    radial-gradient(
+      circle at 50% -10%,
+      rgba(67, 255, 130, 0.14),
+      transparent 32%
+    ),
+    radial-gradient(
+      circle at 100% 35%,
+      rgba(35, 170, 255, 0.08),
+      transparent 30%
+    ),
+    linear-gradient(
+      135deg,
+      #010805,
+      #03170c 45%,
+      #020b06
+    );
+
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+
+/* =========================================================
+   03. ROOT CINEMATIC ENVIRONMENT
+   ========================================================= */
+
+#root {
+  position: relative;
+
+  min-height: 100vh;
+
+  isolation: isolate;
+
+  overflow-x: hidden;
+
+  background:
+    linear-gradient(
+      180deg,
+      rgba(1, 16, 9, 0.20),
+      rgba(1, 10, 6, 0.78)
+    ),
+    url("/maati-ai-bg.png") center / cover fixed no-repeat,
+    radial-gradient(
+      circle at 50% 0%,
+      #0a321c,
+      #020c07 65%
+    );
+}
+
+
+/* =========================================================
+   04. CINEMATIC AURORA
+   ========================================================= */
+
+#root::before {
+  content: "";
+
+  position: fixed;
+
+  inset: -25%;
+
+  z-index: 0;
+
+  pointer-events: none;
+
+  background:
+    radial-gradient(
+      circle at 12% 20%,
+      rgba(45, 255, 116, 0.30),
+      transparent 19%
+    ),
+
+    radial-gradient(
+      circle at 86% 18%,
+      rgba(55, 180, 255, 0.22),
+      transparent 20%
+    ),
+
+    radial-gradient(
+      circle at 48% 90%,
+      rgba(100, 255, 92, 0.18),
+      transparent 25%
+    ),
+
+    radial-gradient(
+      circle at 70% 58%,
+      rgba(0, 255, 170, 0.08),
+      transparent 22%
+    );
+
+  filter: blur(45px);
+
+  opacity: 0.95;
+
+  animation:
+    maatiAurora
+    14s
+    ease-in-out
+    infinite alternate;
+}
+
+
+/* =========================================================
+   05. FUTURISTIC GRID
+   ========================================================= */
+
+#root::after {
+  content: "";
+
+  position: fixed;
+
+  inset: 0;
+
+  z-index: 0;
+
+  pointer-events: none;
+
+  background-image:
+    linear-gradient(
+      rgba(104, 255, 160, 0.075) 1px,
+      transparent 1px
+    ),
+    linear-gradient(
+      90deg,
+      rgba(104, 255, 160, 0.075) 1px,
+      transparent 1px
+    );
+
+  background-size:
+    52px 52px;
+
+  opacity: 0.65;
+
+  mask-image:
+    radial-gradient(
+      ellipse at center,
+      black 0%,
+      rgba(0, 0, 0, 0.85) 42%,
+      transparent 90%
+    );
+
+  animation:
+    maatiGridMove
+    32s
+    linear
+    infinite;
+}
+
+
+/* =========================================================
+   06. KEEP APPLICATION ABOVE BACKGROUND
+   ========================================================= */
+
+#root > * {
+  position: relative;
+  z-index: 2;
+}
+
+
+/* =========================================================
+   07. NAVIGATION / HEADER GLASS
+   ========================================================= */
+
+nav,
+header {
+  position: relative;
+
+  background:
+    linear-gradient(
+      135deg,
+      rgba(3, 32, 18, 0.84),
+      rgba(2, 18, 11, 0.70)
+    ) !important;
+
+  border-color:
+    rgba(125, 255, 165, 0.16) !important;
+
+  backdrop-filter:
+    blur(20px)
+    saturate(140%);
+
+  -webkit-backdrop-filter:
+    blur(20px)
+    saturate(140%);
+
+  box-shadow:
+    0 12px 45px rgba(0, 0, 0, 0.20),
+    inset 0 1px 0 rgba(255, 255, 255, 0.06);
+}
+
+
+/* =========================================================
+   08. HERO
+   ========================================================= */
+
+.hero {
+  position: relative;
+
+  width: min(1180px, 94%);
+
+  min-height: 500px;
+
+  margin: 0 auto;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  isolation: isolate;
+}
+
+
+/* Hero radial energy */
+
+.hero::before {
+  content: "";
+
+  position: absolute;
+
+  width: 760px;
+  height: 760px;
+
+  left: 50%;
+  top: 50%;
+
+  transform:
+    translate(-50%, -50%);
+
+  z-index: -1;
+
+  border-radius: 50%;
+
+  background:
+    radial-gradient(
+      circle,
+      rgba(75, 255, 135, 0.28),
+      rgba(60, 220, 120, 0.10) 35%,
+      transparent 70%
+    );
+
+  filter: blur(25px);
+
+  pointer-events: none;
+
+  animation:
+    heroEnergy
+    7s
+    ease-in-out
+    infinite alternate;
+}
+
+
+/* Hero HUD grid */
+
+.hero::after {
+  content: "";
+
+  position: absolute;
+
+  inset: 10px;
+
+  z-index: -2;
+
+  border-radius: 40px;
+
+  background-image:
+    linear-gradient(
+      rgba(100, 255, 160, 0.055) 1px,
+      transparent 1px
+    ),
+    linear-gradient(
+      90deg,
+      rgba(100, 255, 160, 0.055) 1px,
+      transparent 1px
+    );
+
+  background-size: 38px 38px;
+
+  mask-image:
+    radial-gradient(
+      ellipse at center,
+      black,
+      transparent 76%
+    );
+}
+
+
+/* =========================================================
+   09. HERO LOGO
+   ========================================================= */
+
+.hero .base {
+  position: relative;
+
+  z-index: 5;
+
+  width: 190px;
+
+  max-width: 38vw;
+
+  height: auto;
+
+  margin: 0 auto;
+
+  filter:
+    drop-shadow(
+      0 25px 35px rgba(0, 0, 0, 0.45)
+    )
+    drop-shadow(
+      0 0 38px rgba(75, 255, 135, 0.35)
+    );
+
+  animation:
+    logoFloat
+    5s
+    ease-in-out
+    infinite;
+
+  transition:
+    transform 0.45s ease,
+    filter 0.45s ease;
+}
+
+.hero .base:hover {
+  transform:
+    translateY(-10px)
+    scale(1.06);
+
+  filter:
+    drop-shadow(
+      0 35px 50px rgba(0, 0, 0, 0.50)
+    )
+    drop-shadow(
+      0 0 65px rgba(75, 255, 135, 0.52)
+    );
+}
+
+
+/* =========================================================
+   10. FRAMEWORK DECORATION
+   ========================================================= */
+
+.hero .framework {
+  position: absolute;
+
+  z-index: 7;
+
+  top: 42px;
+
+  left: 50%;
+
+  height: 37px;
+
+  width: auto;
+
+  margin-left: -18px;
+
+  pointer-events: none;
+
+  user-select: none;
+
+  filter:
+    drop-shadow(
+      0 12px 20px rgba(0, 0, 0, 0.40)
+    )
+    drop-shadow(
+      0 0 25px rgba(70, 255, 125, 0.28)
+    );
+
+  transform:
+    perspective(1500px)
+    rotateZ(300deg)
+    rotateX(44deg)
+    rotateY(39deg)
+    scale(1.5);
+
+  animation:
+    frameworkFloat
+    5s
+    ease-in-out
+    infinite;
+}
+
+
+/* =========================================================
+   11. VITE DECORATION
+   ========================================================= */
+
+.hero .vite {
+  position: absolute;
+
+  z-index: 6;
+
+  top: 115px;
+
+  left: 50%;
+
+  height: 29px;
+
+  width: auto;
+
+  margin-left: -14px;
+
+  opacity: 0.94;
+
+  pointer-events: none;
+
+  user-select: none;
+
+  filter:
+    drop-shadow(
+      0 10px 18px rgba(0, 0, 0, 0.35)
+    );
+
+  transform:
+    perspective(1500px)
+    rotateZ(300deg)
+    rotateX(40deg)
+    rotateY(39deg)
+    scale(0.88);
+
+  animation:
+    viteFloat
+    5.5s
+    ease-in-out
+    infinite;
+}
+
+
+/* =========================================================
+   12. MAIN CENTER
+   ========================================================= */
+
+#center {
+  position: relative;
+
+  width: 100%;
+
+  min-height: 650px;
+
+  box-sizing: border-box;
+
+  display: flex;
+
+  flex-direction: column;
+
+  align-items: center;
+
+  justify-content: center;
+
+  gap: 22px;
+
+  padding:
+    90px 25px 100px;
+
+  text-align: center;
+
+  overflow: hidden;
+
+  isolation: isolate;
+
+  animation:
+    fadeUp
+    0.8s
+    ease
+    both;
+}
+
+
+/* Main glass panel */
+
+#center::before {
+  content: "";
+
+  position: absolute;
+
+  inset:
+    55px 6%;
+
+  z-index: -1;
+
+  border-radius: 42px;
+
+  background:
+    linear-gradient(
+      135deg,
+      rgba(8, 55, 30, 0.68),
+      rgba(2, 25, 14, 0.48)
+    );
+
+  border:
+    1px solid rgba(145, 255, 185, 0.18);
+
+  box-shadow:
+    0 40px 120px rgba(0, 0, 0, 0.38),
+    inset 0 1px 0 rgba(255, 255, 255, 0.09),
+    inset 0 0 80px rgba(60, 255, 130, 0.025);
+
+  backdrop-filter:
+    blur(18px)
+    saturate(135%);
+
+  -webkit-backdrop-filter:
+    blur(18px)
+    saturate(135%);
+}
+
+
+/* Center light beam */
+
+#center::after {
+  content: "";
+
+  position: absolute;
+
+  width: 500px;
+
+  height: 900px;
+
+  top: -250px;
+
+  left: 50%;
+
+  z-index: -1;
+
+  transform:
+    translateX(-50%)
+    rotate(24deg);
+
+  background:
+    linear-gradient(
+      90deg,
+      transparent,
+      rgba(120, 255, 160, 0.055),
+      transparent
+    );
+
+  filter: blur(18px);
+
+  pointer-events: none;
+
+  animation:
+    lightBeam
+    10s
+    ease-in-out
+    infinite;
+}
+
+
+/* =========================================================
+   13. HEADINGS
+   ========================================================= */
+
+#center h1,
+#center h2 {
+  position: relative;
+
+  margin: 0;
+
+  color: var(--maati-white);
+
+  font-weight: 900;
+
+  letter-spacing: -0.055em;
+
+  line-height: 1.02;
+
+  text-wrap: balance;
+
+  text-shadow:
+    0 12px 35px rgba(0, 0, 0, 0.50),
+    0 0 40px rgba(80, 255, 130, 0.15);
+
+  animation:
+    titleReveal
+    0.9s
+    ease
+    both;
+}
+
+#center h1 {
+  font-size:
+    clamp(48px, 7vw, 96px);
+}
+
+
+/* =========================================================
+   14. PARAGRAPH
+   ========================================================= */
+
+#center p {
+  max-width: 780px;
+
+  margin: 8px auto 0;
+
+  color:
+    rgba(238, 255, 244, 0.84);
+
+  font-size:
+    clamp(15px, 1.7vw, 19px);
+
+  line-height: 1.8;
+
+  letter-spacing: 0.01em;
+
+  text-shadow:
+    0 4px 18px rgba(0, 0, 0, 0.55);
+
+  animation:
+    fadeUp
+    1s
+    ease
+    0.15s
+    both;
+}
+
+
+/* =========================================================
+   15. COUNTER / STATUS
+   ========================================================= */
+
+.counter {
+  position: relative;
+
+  display: inline-flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  gap: 10px;
+
+  padding: 11px 20px;
+
+  margin: 10px 0 8px;
+
+  border-radius: 999px;
+
+  color: #9dffb8;
+
+  font-size: 14px;
+
+  font-weight: 800;
+
+  letter-spacing: 0.04em;
+
+  background:
+    rgba(5, 55, 28, 0.58);
+
+  border:
+    1px solid rgba(110, 255, 155, 0.30);
+
+  box-shadow:
+    0 12px 35px rgba(0, 0, 0, 0.28),
+    0 0 30px rgba(65, 255, 125, 0.08),
+    inset 0 1px 0 rgba(255, 255, 255, 0.10);
+
+  backdrop-filter:
+    blur(16px);
+
+  -webkit-backdrop-filter:
+    blur(16px);
+
+  transition:
+    transform 0.3s ease,
+    box-shadow 0.3s ease,
+    border-color 0.3s ease;
+}
+
+.counter::before {
+  content: "";
+
+  width: 9px;
+
+  height: 9px;
+
+  flex-shrink: 0;
+
+  border-radius: 50%;
+
+  background:
+    var(--maati-green);
+
+  box-shadow:
+    0 0 0 5px rgba(70, 255, 125, 0.10),
+    0 0 18px var(--maati-green);
+
+  animation:
+    pulse
+    2s
+    ease-in-out
+    infinite;
+}
+
+.counter:hover {
+  transform: translateY(-4px);
+
+  border-color:
+    rgba(110, 255, 155, 0.58);
+
+  box-shadow:
+    0 18px 45px rgba(0, 0, 0, 0.35),
+    0 0 38px rgba(70, 255, 125, 0.15);
+}
+
+
+/* =========================================================
+   16. BUTTONS
+   ========================================================= */
+
+button {
+  font-family: inherit;
+
+  cursor: pointer;
+
+  transition:
+    transform 0.25s ease,
+    box-shadow 0.25s ease,
+    border-color 0.25s ease,
+    background 0.25s ease;
+}
+
+#center button {
+  position: relative;
+
+  overflow: hidden;
+}
+
+#center button::before {
+  content: "";
+
+  position: absolute;
+
+  inset: 0;
+
+  background:
+    linear-gradient(
+      110deg,
+      transparent 25%,
+      rgba(255, 255, 255, 0.20) 50%,
+      transparent 75%
+    );
+
+  transform: translateX(-130%);
+
+  transition:
+    transform 0.7s ease;
+
+  pointer-events: none;
+}
+
+#center button:hover {
+  transform: translateY(-4px);
+
+  box-shadow:
+    0 16px 35px rgba(0, 0, 0, 0.30),
+    0 0 30px rgba(70, 255, 125, 0.14);
+}
+
+#center button:hover::before {
+  transform: translateX(130%);
+}
+
+button:focus-visible {
+  outline:
+    2px solid var(--maati-green);
+
+  outline-offset: 4px;
+}
+
+
+/* =========================================================
+   17. NEXT STEPS
+   ========================================================= */
+
+#next-steps {
+  position: relative;
+
+  width: min(1120px, 92%);
+
+  margin: -50px auto 0;
+
+  display: flex;
+
+  overflow: hidden;
+
+  border-radius: 30px;
+
+  background:
+    linear-gradient(
+      135deg,
+      rgba(5, 45, 25, 0.80),
+      rgba(3, 24, 14, 0.68)
+    );
+
+  border:
+    1px solid rgba(130, 255, 175, 0.18);
+
+  box-shadow:
+    0 40px 110px rgba(0, 0, 0, 0.40),
+    inset 0 1px 0 rgba(255, 255, 255, 0.08);
+
+  backdrop-filter:
+    blur(22px)
+    saturate(140%);
+
+  -webkit-backdrop-filter:
+    blur(22px)
+    saturate(140%);
+
+  z-index: 5;
+}
+
+#next-steps::before {
+  content: "";
+
+  position: absolute;
+
+  top: 0;
+
+  left: 8%;
+
+  width: 84%;
+
+  height: 1px;
+
+  background:
+    linear-gradient(
+      90deg,
+      transparent,
+      rgba(110, 255, 155, 0.90),
+      transparent
+    );
+
+  box-shadow:
+    0 0 20px rgba(70, 255, 125, 0.45);
+}
+
+
+/* =========================================================
+   18. NEXT STEP CARDS
+   ========================================================= */
+
+#next-steps > div {
+  position: relative;
+
+  flex: 1 1 0;
+
+  min-width: 0;
+
+  padding: 42px 30px;
+
+  overflow: hidden;
+
+  border-right:
+    1px solid rgba(130, 255, 175, 0.12);
+
+  transition:
+    transform 0.35s ease,
+    background 0.35s ease;
+}
+
+#next-steps > div:last-child {
+  border-right: none;
+}
+
+#next-steps > div::before {
+  content: "";
+
+  position: absolute;
+
+  width: 220px;
+
+  height: 220px;
+
+  right: -110px;
+
+  top: -110px;
+
+  border-radius: 50%;
+
+  background:
+    radial-gradient(
+      circle,
+      rgba(70, 255, 125, 0.18),
+      transparent 70%
+    );
+
+  transition:
+    transform 0.5s ease;
+}
+
+#next-steps > div:hover {
+  transform: translateY(-6px);
+
+  background:
+    rgba(65, 255, 125, 0.055);
+}
+
+#next-steps > div:hover::before {
+  transform: scale(1.5);
+}
+
+
+/* =========================================================
+   19. CARD ICONS
+   ========================================================= */
+
+#next-steps .icon {
+  display: block;
+
+  width: 30px;
+
+  height: 30px;
+
+  margin: 0 auto 17px;
+
+  color:
+    var(--maati-green-bright);
+
+  filter:
+    drop-shadow(
+      0 0 14px rgba(70, 255, 125, 0.42)
+    );
+
+  transition:
+    transform 0.3s ease;
+}
+
+#next-steps > div:hover .icon {
+  transform:
+    translateY(-5px)
+    scale(1.12);
+}
+
+
+/* =========================================================
+   20. CARD TEXT
+   ========================================================= */
+
+#next-steps h3 {
+  margin: 0 0 9px;
+
+  color: #ffffff;
+
+  font-size: 19px;
+
+  font-weight: 850;
+
+  letter-spacing: -0.02em;
+}
+
+#next-steps p {
+  margin: 0;
+
+  color:
+    rgba(225, 245, 232, 0.74);
+
+  line-height: 1.7;
+
+  font-size: 14px;
+}
+
+
+/* =========================================================
+   21. GLASS SYSTEM
+   ========================================================= */
+
+.glass,
+.card,
+.panel {
+  background:
+    linear-gradient(
+      135deg,
+      rgba(5, 42, 24, 0.72),
+      rgba(2, 23, 13, 0.62)
+    );
+
+  border:
+    1px solid rgba(130, 255, 175, 0.16);
+
+  box-shadow:
+    0 25px 70px rgba(0, 0, 0, 0.28),
+    inset 0 1px 0 rgba(255, 255, 255, 0.07);
+
+  backdrop-filter:
+    blur(18px)
+    saturate(135%);
+
+  -webkit-backdrop-filter:
+    blur(18px)
+    saturate(135%);
+}
+
+
+/* =========================================================
+   22. FORM ELEMENTS
+   ========================================================= */
+
+input,
+textarea,
+select {
+  color: #effff4;
+
+  background:
+    rgba(2, 28, 15, 0.72);
+
+  border:
+    1px solid rgba(130, 255, 175, 0.18);
+
+  border-radius: 12px;
+
+  outline: none;
+
+  transition:
+    border-color 0.25s ease,
+    box-shadow 0.25s ease,
+    background 0.25s ease;
+}
+
+input::placeholder,
+textarea::placeholder {
+  color:
+    rgba(220, 245, 228, 0.45);
+}
+
+input:focus,
+textarea:focus,
+select:focus {
+  border-color:
+    rgba(100, 255, 145, 0.58);
+
+  background:
+    rgba(4, 38, 21, 0.84);
+
+  box-shadow:
+    0 0 0 3px rgba(70, 255, 125, 0.08),
+    0 0 25px rgba(70, 255, 125, 0.08);
+}
+
+
+/* =========================================================
+   23. LINKS
+   ========================================================= */
+
+a {
+  color: var(--maati-green-bright);
+
+  transition:
+    color 0.25s ease,
+    text-shadow 0.25s ease;
+}
+
+a:hover {
+  color: #ffffff;
+
+  text-shadow:
+    0 0 18px rgba(82, 242, 138, 0.42);
+}
+
+
+/* =========================================================
+   24. RESOURCE BUTTONS
+   ========================================================= */
+
+#next-steps ul {
+  list-style: none;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  flex-wrap: wrap;
+
+  gap: 10px;
+
+  margin: 25px 0 0;
+
+  padding: 0;
+}
+
+#next-steps ul a {
+  position: relative;
+
+  display: inline-flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  gap: 8px;
+
+  padding: 9px 15px;
+
+  color:
+    rgba(242, 255, 246, 0.90);
+
+  text-decoration: none;
+
+  font-size: 13px;
+
+  font-weight: 700;
+
+  border-radius: 12px;
+
+  background:
+    rgba(255, 255, 255, 0.055);
+
+  border:
+    1px solid rgba(130, 255, 175, 0.15);
+
+  box-shadow:
+    0 7px 20px rgba(0, 0, 0, 0.16);
+
+  backdrop-filter:
+    blur(10px);
+
+  overflow: hidden;
+
+  transition:
+    transform 0.25s ease,
+    background 0.25s ease,
+    border-color 0.25s ease,
+    box-shadow 0.25s ease;
+}
+
+#next-steps ul a:hover {
+  transform: translateY(-3px);
+
+  background:
+    rgba(70, 255, 125, 0.11);
+
+  border-color:
+    rgba(100, 255, 145, 0.42);
+
+  box-shadow:
+    0 12px 30px rgba(0, 0, 0, 0.25),
+    0 0 22px rgba(70, 255, 125, 0.10);
+}
+
+#next-steps ul .logo {
+  width: auto;
+  height: 18px;
+}
+
+#next-steps ul .button-icon {
+  width: 17px;
+  height: 17px;
+
+  color:
+    var(--maati-green-bright);
+
+  flex-shrink: 0;
+}
+
+
+/* =========================================================
+   25. SPACER
+   ========================================================= */
+
+#spacer {
+  position: relative;
+
+  height: 115px;
+
+  margin: 0;
+
+  border-top:
+    1px solid rgba(130, 255, 175, 0.08);
+
+  background:
+    linear-gradient(
+      180deg,
+      rgba(3, 25, 15, 0.28),
+      rgba(1, 10, 6, 0.90)
+    );
+}
+
+
+/* =========================================================
+   26. DECORATIVE TICKS
+   ========================================================= */
+
+.ticks {
+  position: relative;
+
+  width: 100%;
+
+  height: 10px;
+
+  opacity: 0.7;
+}
+
+.ticks::before,
+.ticks::after {
+  content: "";
+
+  position: absolute;
+
+  top: -4px;
+
+  width: 70px;
+
+  height: 1px;
+
+  background:
+    linear-gradient(
+      90deg,
+      transparent,
+      var(--maati-green)
+    );
+
+  box-shadow:
+    0 0 12px rgba(70, 255, 125, 0.35);
+}
+
+.ticks::before {
+  left: 8%;
+}
+
+.ticks::after {
+  right: 8%;
+
+  transform: rotate(180deg);
+}
+
+
+/* =========================================================
+   27. SCROLLBAR
+   ========================================================= */
+
+::-webkit-scrollbar {
+  width: 9px;
+  height: 9px;
+}
+
+::-webkit-scrollbar-track {
+  background:
+    #020c07;
+}
+
+::-webkit-scrollbar-thumb {
+  border-radius: 999px;
+
+  background:
+    linear-gradient(
+      180deg,
+      #65f49a,
+      #116b3b
+    );
+
+  border:
+    2px solid #020c07;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background:
+    linear-gradient(
+      180deg,
+      #9affbd,
+      #19874a
+    );
+}
+
+
+/* =========================================================
+   28. SELECTION
+   ========================================================= */
+
+::selection {
+  color: #021208;
+
+  background:
+    rgba(105, 255, 155, 0.82);
+}
+
+
+/* =========================================================
+   29. ANIMATIONS
+   ========================================================= */
+
+@keyframes maatiAurora {
+  0% {
+    transform:
+      scale(0.96)
+      translate3d(0, 0, 0);
+
+    opacity: 0.72;
+  }
+
+  50% {
+    transform:
+      scale(1.04)
+      translate3d(18px, -12px, 0);
+
+    opacity: 0.90;
+  }
+
+  100% {
+    transform:
+      scale(1.10)
+      translate3d(-25px, 18px, 0);
+
+    opacity: 1;
+  }
+}
+
+
+@keyframes maatiGridMove {
+  from {
+    background-position:
+      0 0,
+      0 0;
+  }
+
+  to {
+    background-position:
+      52px 52px,
+      52px 52px;
+  }
+}
+
+
+@keyframes heroEnergy {
+  0% {
+    opacity: 0.50;
+
+    transform:
+      translate(-50%, -50%)
+      scale(0.90);
+  }
+
+  100% {
+    opacity: 1;
+
+    transform:
+      translate(-50%, -50%)
+      scale(1.10);
+  }
+}
+
+
+@keyframes logoFloat {
+  0%,
+  100% {
+    transform:
+      translateY(0);
+  }
+
+  50% {
+    transform:
+      translateY(-13px);
+  }
+}
+
+
+@keyframes frameworkFloat {
+  0%,
+  100% {
+    margin-top: 0;
+  }
+
+  50% {
+    margin-top: -9px;
+  }
+}
+
+
+@keyframes viteFloat {
+  0%,
+  100% {
+    margin-top: 0;
+  }
+
+  50% {
+    margin-top: 8px;
+  }
+}
+
+
+@keyframes pulse {
+  0%,
+  100% {
+    opacity: 0.55;
+
+    transform:
+      scale(0.90);
+  }
+
+  50% {
+    opacity: 1;
+
+    transform:
+      scale(1.20);
+  }
+}
+
+
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+
+    transform:
+      translateY(22px);
+  }
+
+  to {
+    opacity: 1;
+
+    transform:
+      translateY(0);
+  }
+}
+
+
+@keyframes titleReveal {
+  from {
+    opacity: 0;
+
+    transform:
+      translateY(25px)
+      scale(0.96);
+  }
+
+  to {
+    opacity: 1;
+
+    transform:
+      translateY(0)
+      scale(1);
+  }
+}
+
+
+@keyframes lightBeam {
+  0%,
+  100% {
+    opacity: 0.12;
+
+    transform:
+      translateX(-50%)
+      rotate(24deg);
+  }
+
+  50% {
+    opacity: 0.52;
+
+    transform:
+      translateX(-42%)
+      rotate(24deg);
+  }
+}
+
+
+/* =========================================================
+   30. TABLET
+   ========================================================= */
+
+@media (max-width: 1024px) {
+  #center {
+    min-height: 600px;
+
+    padding:
+      75px 20px 100px;
+  }
+
+  #center::before {
+    inset:
+      45px 4%;
+  }
+
+  #next-steps {
+    width: 94%;
+
+    flex-direction: column;
+  }
+
+  #next-steps > div {
+    border-right: none;
+
+    border-bottom:
+      1px solid rgba(130, 255, 175, 0.12);
+
+    text-align: center;
+  }
+
+  #next-steps > div:last-child {
+    border-bottom: none;
+  }
+
+  .hero {
+    min-height: 450px;
+  }
+}
+
+
+/* =========================================================
+   31. MOBILE
+   ========================================================= */
+
+@media (max-width: 640px) {
+  #root {
+    background:
+      linear-gradient(
+        180deg,
+        rgba(1, 18, 10, 0.34),
+        rgba(1, 15, 8, 0.88)
+      ),
+      url("/maati-ai-bg.png") center / cover no-repeat,
+      #020c07;
+  }
+
+  #root::after {
+    background-size: 32px 32px;
+
+    opacity: 0.42;
+  }
+
+  .hero {
+    width: 94%;
+
+    min-height: 360px;
+  }
+
+  .hero::before {
+    width: 440px;
+    height: 440px;
+  }
+
+  .hero .base {
+    width: 145px;
+  }
+
+  .hero .framework {
+    top: 22px;
+
+    height: 28px;
+
+    margin-left: -14px;
+  }
+
+  .hero .vite {
+    top: 87px;
+
+    height: 22px;
+
+    margin-left: -11px;
+  }
+
+  #center {
+    min-height: 570px;
+
+    padding:
+      65px 14px 85px;
+
+    gap: 17px;
+  }
+
+  #center::before {
+    inset:
+      25px 9px;
+
+    border-radius: 28px;
+  }
+
+  #center h1 {
+    font-size:
+      clamp(45px, 15vw, 72px);
+  }
+
+  #center p {
+    max-width: 90%;
+
+    font-size: 14px;
+
+    line-height: 1.7;
+  }
+
+  .counter {
+    padding:
+      9px 16px;
+
+    font-size: 12px;
+  }
+
+  #next-steps {
+    width: 94%;
+
+    margin-top: -30px;
+
+    border-radius: 24px;
+  }
+
+  #next-steps > div {
+    padding:
+      30px 18px;
+  }
+
+  #next-steps h3 {
+    font-size: 17px;
+  }
+
+  #next-steps p {
+    font-size: 13px;
+  }
+
+  #next-steps ul {
+    gap: 8px;
+  }
+
+  #next-steps ul a {
+    padding:
+      8px 12px;
+
+    font-size: 12px;
+  }
+
+  #spacer {
+    height: 70px;
+  }
+}
+
+
+/* =========================================================
+   32. SMALL PHONES
+   ========================================================= */
+
+@media (max-width: 380px) {
+  #center {
+    min-height: 540px;
+  }
+
+  #center h1 {
+    font-size: 42px;
+  }
+
+  .hero .base {
+    width: 125px;
+  }
+
+  .counter {
+    font-size: 11px;
+
+    padding:
+      8px 13px;
+  }
+
+  #next-steps {
+    width: 95%;
+  }
+}
+
+
+/* =========================================================
+   33. REDUCED MOTION
+   ========================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+
+    animation-iteration-count: 1 !important;
+
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* =========================================================
+   MAATI AI DASHBOARD
+   CINEMATIC GLASSMORPHISM + AI HUD + AGRI STYLE
+   ========================================================= */
+
+/* ---------- Dashboard surfaces ---------- */
+
+main,
+section {
+  position: relative;
+}
+
+main::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 1;
+
+  background:
+    radial-gradient(
+      circle at 50% 15%,
+      rgba(83, 255, 140, 0.08),
+      transparent 30%
+    ),
+    radial-gradient(
+      circle at 10% 65%,
+      rgba(35, 200, 130, 0.06),
+      transparent 25%
+    ),
+    radial-gradient(
+      circle at 90% 70%,
+      rgba(50, 180, 255, 0.05),
+      transparent 25%
+    );
+
+  mix-blend-mode: screen;
+}
+
+
+/* ---------- Universal glass cards ---------- */
+
+.card,
+.panel,
+.glass,
+[class*="card"],
+[class*="panel"] {
+  position: relative;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(8, 47, 27, 0.78),
+      rgba(3, 25, 15, 0.64)
+    ) !important;
+
+  border:
+    1px solid rgba(125, 255, 169, 0.16) !important;
+
+  box-shadow:
+    0 24px 70px rgba(0, 0, 0, 0.32),
+    inset 0 1px 0 rgba(255, 255, 255, 0.075),
+    inset 0 0 40px rgba(65, 255, 125, 0.025);
+
+  backdrop-filter:
+    blur(20px)
+    saturate(140%);
+
+  -webkit-backdrop-filter:
+    blur(20px)
+    saturate(140%);
+
+  overflow: hidden;
+
+  transition:
+    transform 0.35s ease,
+    border-color 0.35s ease,
+    box-shadow 0.35s ease;
+}
+
+
+/* Card light sweep */
+
+.card::before,
+.panel::before,
+.glass::before,
+[class*="card"]::before,
+[class*="panel"]::before {
+  content: "";
+
+  position: absolute;
+
+  top: 0;
+  left: -120%;
+
+  width: 70%;
+  height: 100%;
+
+  pointer-events: none;
+
+  background:
+    linear-gradient(
+      100deg,
+      transparent,
+      rgba(140, 255, 180, 0.045),
+      transparent
+    );
+
+  transform: skewX(-18deg);
+
+  transition:
+    left 0.8s ease;
+}
+
+.card:hover::before,
+.panel:hover::before,
+.glass:hover::before,
+[class*="card"]:hover::before,
+[class*="panel"]:hover::before {
+  left: 140%;
+}
+
+
+/* Card hover */
+
+.card:hover,
+.panel:hover,
+.glass:hover,
+[class*="card"]:hover,
+[class*="panel"]:hover {
+  transform: translateY(-5px);
+
+  border-color:
+    rgba(125, 255, 169, 0.30) !important;
+
+  box-shadow:
+    0 30px 90px rgba(0, 0, 0, 0.38),
+    0 0 35px rgba(70, 255, 125, 0.08),
+    inset 0 1px 0 rgba(255, 255, 255, 0.10);
+}
+
+
+/* =========================================================
+   AI HUD CORNERS
+   ========================================================= */
+
+.card::after,
+.panel::after,
+.glass::after {
+  content: "";
+
+  position: absolute;
+
+  inset: 10px;
+
+  pointer-events: none;
+
+  border-radius: inherit;
+
+  background:
+    linear-gradient(
+      90deg,
+      rgba(82, 242, 138, 0.35),
+      transparent 18%
+    )
+    top left / 45px 1px no-repeat,
+
+    linear-gradient(
+      180deg,
+      rgba(82, 242, 138, 0.35),
+      transparent 18%
+    )
+    top left / 1px 45px no-repeat,
+
+    linear-gradient(
+      270deg,
+      rgba(82, 242, 138, 0.25),
+      transparent 18%
+    )
+    bottom right / 45px 1px no-repeat,
+
+    linear-gradient(
+      0deg,
+      rgba(82, 242, 138, 0.25),
+      transparent 18%
+    )
+    bottom right / 1px 45px no-repeat;
+
+  opacity: 0.55;
+}
+
+
+/* =========================================================
+   STAT / KPI CARDS
+   ========================================================= */
+
+[class*="stat"],
+[class*="metric"],
+[class*="kpi"],
+[class*="summary"] {
+  background:
+    linear-gradient(
+      135deg,
+      rgba(6, 49, 27, 0.82),
+      rgba(2, 24, 14, 0.68)
+    ) !important;
+
+  border:
+    1px solid rgba(103, 255, 151, 0.17) !important;
+
+  box-shadow:
+    0 20px 55px rgba(0, 0, 0, 0.28),
+    inset 0 1px 0 rgba(255, 255, 255, 0.07);
+}
+
+
+/* Numbers */
+
+[class*="stat"] strong,
+[class*="metric"] strong,
+[class*="kpi"] strong {
+  color: var(--maati-green-bright);
+
+  text-shadow:
+    0 0 22px rgba(82, 242, 138, 0.28);
+}
+
+
+/* =========================================================
+   AI SECTION HEADERS
+   ========================================================= */
+
+h1,
+h2,
+h3 {
+  text-wrap: balance;
+}
+
+h1 {
+  text-shadow:
+    0 8px 35px rgba(0, 0, 0, 0.48),
+    0 0 35px rgba(82, 242, 138, 0.10);
+}
+
+h2 {
+  position: relative;
+}
+
+h2::after {
+  content: "";
+
+  display: block;
+
+  width: 55px;
+
+  height: 2px;
+
+  margin-top: 10px;
+
+  border-radius: 999px;
+
+  background:
+    linear-gradient(
+      90deg,
+      var(--maati-green),
+      transparent
+    );
+
+  box-shadow:
+    0 0 15px rgba(82, 242, 138, 0.40);
+}
+
+
+/* =========================================================
+   AI STATUS BADGES
+   ========================================================= */
+
+[class*="badge"],
+[class*="status"],
+[class*="tag"] {
+  border:
+    1px solid rgba(115, 255, 165, 0.20);
+
+  background:
+    rgba(50, 190, 100, 0.09);
+
+  color:
+    #a9ffc4;
+
+  backdrop-filter:
+    blur(10px);
+
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.07),
+    0 0 20px rgba(70, 255, 125, 0.05);
+}
+
+
+/* =========================================================
+   GREEN AI BUTTONS
+   ========================================================= */
+
+button {
+  border-color:
+    rgba(110, 255, 155, 0.20);
+
+  box-shadow:
+    0 8px 25px rgba(0, 0, 0, 0.20);
+}
+
+button:hover {
+  box-shadow:
+    0 12px 35px rgba(0, 0, 0, 0.30),
+    0 0 25px rgba(82, 242, 138, 0.13);
+}
+
+
+/* Primary-looking buttons */
+
+button[class*="green"],
+button[class*="primary"],
+button[class*="success"] {
+  background:
+    linear-gradient(
+      135deg,
+      #39c96d,
+      #16894a
+    ) !important;
+
+  color: #ffffff !important;
+
+  border-color:
+    rgba(155, 255, 190, 0.30) !important;
+
+  box-shadow:
+    0 10px 30px rgba(26, 170, 82, 0.24),
+    inset 0 1px 0 rgba(255, 255, 255, 0.16);
+}
+
+
+/* =========================================================
+   FORM / INPUT HUD
+   ========================================================= */
+
+input,
+textarea,
+select {
+  background:
+    linear-gradient(
+      135deg,
+      rgba(4, 36, 20, 0.80),
+      rgba(2, 20, 12, 0.68)
+    ) !important;
+
+  border:
+    1px solid rgba(119, 255, 166, 0.17) !important;
+
+  color:
+    #f0fff5 !important;
+
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.04),
+    0 8px 25px rgba(0, 0, 0, 0.12);
+
+  backdrop-filter:
+    blur(14px);
+}
+
+input:focus,
+textarea:focus,
+select:focus {
+  border-color:
+    rgba(90, 255, 145, 0.55) !important;
+
+  box-shadow:
+    0 0 0 3px rgba(80, 255, 140, 0.08),
+    0 0 30px rgba(80, 255, 140, 0.08);
+}
+
+
+/* =========================================================
+   AGRICULTURAL DATA VISUALIZATION
+   ========================================================= */
+
+[data-crop],
+[class*="crop"] {
+  position: relative;
+}
+
+
+/* Leaf / agriculture icon glow */
+
+svg {
+  transition:
+    filter 0.25s ease,
+    transform 0.25s ease;
+}
+
+svg:hover {
+  filter:
+    drop-shadow(
+      0 0 10px rgba(82, 242, 138, 0.32)
+    );
+}
+
+
+/* =========================================================
+   MAP / SURVEILLANCE
+   ========================================================= */
+
+.leaflet-container {
+  background:
+    #03140b !important;
+
+  border:
+    1px solid rgba(110, 255, 155, 0.16);
+
+  border-radius:
+    20px;
+
+  box-shadow:
+    0 25px 70px rgba(0, 0, 0, 0.38),
+    inset 0 0 30px rgba(70, 255, 125, 0.04);
+
+  overflow: hidden;
+}
+
+
+/* Map popup */
+
+.leaflet-popup-content-wrapper,
+.leaflet-popup-tip {
+  background:
+    rgba(3, 25, 15, 0.94);
+
+  color:
+    #edfff3;
+
+  border:
+    1px solid rgba(110, 255, 155, 0.20);
+
+  box-shadow:
+    0 20px 50px rgba(0, 0, 0, 0.40);
+}
+
+.leaflet-popup-content {
+  color:
+    #edfff3;
+}
+
+
+/* =========================================================
+   SURVEILLANCE ALERTS
+   ========================================================= */
+
+[class*="danger"],
+[class*="critical"],
+[class*="alert"] {
+  box-shadow:
+    0 0 30px rgba(255, 80, 80, 0.07),
+    0 15px 45px rgba(0, 0, 0, 0.25);
+}
+
+
+/* =========================================================
+   AI SCAN LINE
+   ========================================================= */
+
+.maati-ai-scan {
+  position: relative;
+
+  overflow: hidden;
+}
+
+.maati-ai-scan::after {
+  content: "";
+
+  position: absolute;
+
+  left: 0;
+  right: 0;
+
+  top: -20%;
+
+  height: 2px;
+
+  background:
+    linear-gradient(
+      90deg,
+      transparent,
+      rgba(100, 255, 155, 0.80),
+      transparent
+    );
+
+  box-shadow:
+    0 0 18px rgba(100, 255, 155, 0.65);
+
+  animation:
+    aiScan
+    3.5s
+    linear
+    infinite;
+
+  pointer-events: none;
+}
+
+
+/* =========================================================
+   DATA STREAM DECORATION
+   ========================================================= */
+
+.maati-data-stream {
+  position: relative;
+
+  overflow: hidden;
+}
+
+.maati-data-stream::before {
+  content: "";
+
+  position: absolute;
+
+  left: 0;
+  right: 0;
+
+  bottom: 0;
+
+  height: 1px;
+
+  background:
+    linear-gradient(
+      90deg,
+      transparent,
+      var(--maati-green),
+      var(--maati-blue),
+      transparent
+    );
+
+  opacity: 0.55;
+
+  animation:
+    dataStream
+    3s
+    linear
+    infinite;
+}
+
+
+/* =========================================================
+   GLASS MODAL
+   ========================================================= */
+
+[role="dialog"],
+.modal {
+  background:
+    linear-gradient(
+      145deg,
+      rgba(5, 38, 21, 0.94),
+      rgba(1, 17, 10, 0.92)
+    ) !important;
+
+  border:
+    1px solid rgba(125, 255, 169, 0.24) !important;
+
+  box-shadow:
+    0 45px 130px rgba(0, 0, 0, 0.60),
+    0 0 70px rgba(70, 255, 125, 0.07);
+
+  backdrop-filter:
+    blur(30px)
+    saturate(150%);
+}
+
+
+/* =========================================================
+   TABLE / DATA ROWS
+   ========================================================= */
+
+table {
+  border-collapse: separate;
+
+  border-spacing: 0 7px;
+}
+
+tbody tr {
+  background:
+    rgba(4, 32, 18, 0.48);
+
+  transition:
+    background 0.25s ease,
+    transform 0.25s ease;
+}
+
+tbody tr:hover {
+  background:
+    rgba(62, 190, 105, 0.08);
+
+  transform:
+    translateX(3px);
+}
+
+th {
+  color:
+    rgba(174, 255, 198, 0.78);
+
+  font-size: 12px;
+
+  letter-spacing: 0.08em;
+
+  text-transform: uppercase;
+}
+
+
+/* =========================================================
+   HUD CORNER LABEL
+   ========================================================= */
+
+.maati-hud-label {
+  display: inline-flex;
+
+  align-items: center;
+
+  gap: 8px;
+
+  padding:
+    7px 11px;
+
+  border:
+    1px solid rgba(100, 255, 150, 0.20);
+
+  border-radius: 8px;
+
+  background:
+    rgba(50, 190, 100, 0.07);
+
+  color:
+    rgba(174, 255, 198, 0.82);
+
+  font-size: 11px;
+
+  font-weight: 800;
+
+  letter-spacing: 0.10em;
+
+  text-transform: uppercase;
+}
+
+.maati-hud-label::before {
+  content: "";
+
+  width: 6px;
+  height: 6px;
+
+  border-radius: 50%;
+
+  background:
+    var(--maati-green);
+
+  box-shadow:
+    0 0 12px var(--maati-green);
+
+  animation:
+    pulse
+    1.8s
+    ease-in-out
+    infinite;
+}
+
+
+/* =========================================================
+   AI PROCESSING INDICATOR
+   ========================================================= */
+
+.maati-processing {
+  display: inline-flex;
+
+  align-items: center;
+
+  gap: 7px;
+
+  color:
+    #9dffba;
+
+  font-size: 12px;
+
+  font-weight: 700;
+
+  letter-spacing: 0.05em;
+}
+
+.maati-processing::before {
+  content: "";
+
+  width: 7px;
+  height: 7px;
+
+  border-radius: 50%;
+
+  background:
+    var(--maati-green);
+
+  box-shadow:
+    0 0 0 4px rgba(82, 242, 138, 0.08),
+    0 0 18px rgba(82, 242, 138, 0.65);
+
+  animation:
+    pulse
+    1.2s
+    ease-in-out
+    infinite;
+}
+
+
+/* =========================================================
+   ANIMATIONS
+   ========================================================= */
+
+@keyframes aiScan {
+  0% {
+    transform:
+      translateY(0);
+
+    opacity: 0;
+  }
+
+  15% {
+    opacity: 1;
+  }
+
+  85% {
+    opacity: 1;
+  }
+
+  100% {
+    transform:
+      translateY(650px);
+
+    opacity: 0;
+  }
+}
+
+@keyframes dataStream {
+  0% {
+    transform:
+      translateX(-100%);
+  }
+
+  100% {
+    transform:
+      translateX(100%);
+  }
+}
+
+
+/* =========================================================
+   MOBILE
+   ========================================================= */
+
+@media (max-width: 640px) {
+  .card,
+  .panel,
+  .glass,
+  [class*="card"],
+  [class*="panel"] {
+    backdrop-filter:
+      blur(14px);
+
+    -webkit-backdrop-filter:
+      blur(14px);
+  }
+
+  main::before {
+    opacity: 0.55;
+  }
+
+  .leaflet-container {
+    border-radius: 14px;
+  }
+}
