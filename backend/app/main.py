@@ -432,15 +432,14 @@ async def detect_disease(
 
     if model is None:
 
-        return {
-            "status": "MODEL_UNAVAILABLE",
-            "message": (
-                "The disease model could not be loaded. "
-                "Install the ML dependencies and allow the "
-                "model to download on first run."
-            ),
-            "filename": file.filename
-        }
+     return {
+        "status": "MODEL_UNAVAILABLE",
+        "message": (
+            "The disease model could not be loaded."
+        ),
+        "error": _model_error,
+        "filename": file.filename
+    }
 
     try:
 
