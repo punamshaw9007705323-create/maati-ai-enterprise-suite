@@ -1688,14 +1688,36 @@ export default function App() {
                     )}
 
                     <div className="grid grid-cols-2 gap-2">
-                      <label className="w-full bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold py-2.5 px-3 rounded-xl shadow-xs cursor-pointer flex items-center justify-center gap-1.5 transition">
-                        <Camera size={15} /> Open Camera
-                        <input type="file" accept="image/*" capture="environment" onChange={handleDiseaseUpload} className="hidden" />
-                      </label>
-                      <label className="w-full bg-white hover:bg-slate-50 border border-slate-300 text-slate-700 text-xs font-bold py-2.5 px-3 rounded-xl shadow-xs cursor-pointer flex items-center justify-center gap-1.5 transition">
-                        <ImageIcon size={15} className="text-emerald-600" /> Upload Picture
-                        <input type="file" accept="image/*" onChange={handleDiseaseUpload} className="hidden" />
-                      </label>
+                      <label
+  onClick={(e) => e.stopPropagation()}
+  className="w-full bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold py-2.5 px-3 rounded-xl shadow-xs cursor-pointer flex items-center justify-center gap-1.5 transition"
+>
+  <Camera size={15} />
+  Open Camera
+  <input
+    type="file"
+    accept="image/*"
+    capture="environment"
+    onClick={(e) => e.stopPropagation()}
+    onChange={handleDiseaseUpload}
+    className="hidden"
+  />
+</label>
+
+<label
+  onClick={(e) => e.stopPropagation()}
+  className="w-full bg-white hover:bg-slate-50 border border-slate-300 text-slate-700 text-xs font-bold py-2.5 px-3 rounded-xl shadow-xs cursor-pointer flex items-center justify-center gap-1.5 transition"
+>
+  <ImageIcon size={15} className="text-emerald-600" />
+  Upload Picture
+  <input
+    type="file"
+    accept="image/*"
+    onClick={(e) => e.stopPropagation()}
+    onChange={handleDiseaseUpload}
+    className="hidden"
+  />
+</label>
                     </div>
 
                     {actionLoading && (
