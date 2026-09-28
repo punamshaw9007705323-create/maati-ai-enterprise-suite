@@ -762,51 +762,123 @@ useEffect(() => {
   };
 
   const handleDiseaseUpload = async (e) => {
-    const file = e.target.files?.[0];
-    if (!file) return;
+  const input = e.currentTarget;
+  const file = input.files?.[0];
 
-    const previewUrl = URL.createObjectURL(file);
-    setUploadedPreview(previewUrl);
-    setActiveDisease(null);
-    setSelectedDiseaseKey(null);
-    setActionLoading(true);
-    setSyncToast("Analyzing leaf with Maati AI...");
+  if (!file) return;
 
-    try {
-      const formData = new FormData();
-      formData.append("file", file);
-      const response = await fetch("https://maati-ai-backend.onrender.com/api/v1/detect-disease", {
+  const previewUrl = URL.createObjectURL(file);
+
+  setUploadedPreview(previewUrl);
+  setActiveDisease(null);
+  setSelectedDiseaseKey(null);
+  setActionLoading(true);
+  setSyncToast("Analyzing leaf with Maati AI...");
+
+  try {
+    const formData = new FormData();
+    formData.append("file", file);
+
+    const response = await fetch(
+      "https://maati-ai-backend.onrender.com/api/v1/detect-disease",
+      {
         method: "POST",
         body: formData
-      });
-      const data = await response.json();
-      if (!response.ok) throw new Error(data?.detail || "Disease detection request failed.");
-      if (data.status !== "SUCCESS") throw new Error(data.message || "AI disease detection was unsuccessful.");
+      }
+    );
 
-      const diseaseTreatment = getDiseaseTreatmentAdvisory(data.crop, data.disease);
-      setActiveDisease({
-        crop: data.crop || "Unknown",
-        disease: data.disease || "Unknown Disease",
-        pathogen: data.pathogen || "See agricultural expert for pathogen confirmation",
-        confidence: Number(data.confidence || 0),
-        humanRisk: data.description || "AI screening result. Field verification is recommended for uncertain cases.",
-        chemical: diseaseTreatment?.chemical || data.treatment?.chemical || "Use only locally registered crop-protection products according to the product label.",
-        organic: diseaseTreatment?.biological || data.treatment?.organic || "Maintain crop hygiene and follow locally approved integrated pest management practices.",
-        advisory: diseaseTreatment?.immediate || data.treatment?.advisory || "Monitor the crop regularly and consult an agricultural expert when necessary.",
-        treatmentPlan: diseaseTreatment,
-        humanImpact: diseaseTreatment?.humanImpact || "The detected plant disease is not automatically a human disease. Avoid direct exposure to diseased plant material, dust and spray mist, and follow appropriate PPE and product-label safety instructions."
-      });
-      setSyncToast(`AI diagnosis completed: ${data.disease || "Unknown Disease"}`);
-    } catch (error) {
-      console.error("Disease detection error:", error);
-      setSyncToast(error.message || "Unable to analyze the leaf. Please check the backend server.");
-    } finally {
-      setActionLoading(false);
-      setTimeout(() => setSyncToast(""), 3500);
-      e.target.value = "";
+    const data = await response.json();
+
+    if (!response.ok) {
+      throw new Error(
+        data?.detail || "Disease detection request failed."
+      );
     }
-  };
 
+    if (data.status !== "SUCCESS") {
+      throw new Error(
+        data?.message || "AI disease detection was unsuccessful."
+      );
+    }
+
+    // Display the backend AI result immediately.
+    setActiveDisease({
+      crop: data.crop || "Unknown",
+      disease: data.disease || "Unknown Disease",
+      pathogen:
+        data.pathogen ||
+        "See agricultural expert for pathogen confirmation",
+      confidence: Number(data.confidence || 0),
+      humanRisk:
+        data.description ||
+        "AI screening result. Field verification is recommended for uncertain cases.",
+      chemical:
+        data.treatment?.chemical ||
+        "Use only locally registered crop-protection products according to the product label.",
+      organic:
+        data.treatment?.organic ||
+        "Maintain crop hygiene and follow locally approved integrated pest management practices.",
+      advisory:
+        data.treatment?.advisory ||
+        "Monitor the crop regularly and consult an agricultural expert when necessary.",
+      treatmentPlan: null,
+      humanImpact:
+        "The detected plant disease is not automatically a human disease. Avoid direct exposure to diseased plant material, dust and spray mist, and follow appropriate PPE and product-label safety instructions."
+    });
+
+    // Stop the scanner immediately after a successful AI response.
+    setActionLoading(false);
+
+    // Apply Maati AI advisory data separately when available.
+    try {
+      const diseaseTreatment = getDiseaseTreatmentAdvisory(
+        data.crop,
+        data.disease
+      );
+
+      if (diseaseTreatment) {
+        setActiveDisease((previous) => ({
+          ...previous,
+          chemical:
+            diseaseTreatment.chemical ||
+            previous.chemical,
+          organic:
+            diseaseTreatment.biological ||
+            previous.organic,
+          advisory:
+            diseaseTreatment.immediate ||
+            previous.advisory,
+          treatmentPlan: diseaseTreatment,
+          humanImpact:
+            diseaseTreatment.humanImpact ||
+            previous.humanImpact
+        }));
+      }
+    } catch (advisoryError) {
+      console.warn(
+        "Disease advisory lookup failed:",
+        advisoryError
+      );
+    }
+
+    setSyncToast(
+      `AI diagnosis completed: ${data.disease || "Unknown Disease"}`
+    );
+  } catch (error) {
+    console.error("Disease detection error:", error);
+    setActionLoading(false);
+    setSyncToast(
+      error.message ||
+      "Unable to analyze the leaf. Please check the backend server."
+    );
+  } finally {
+    input.value = "";
+
+    setTimeout(() => {
+      setSyncToast("");
+    }, 3500);
+  }
+};
   const handleCropSubmit = async (e) => {
     e.preventDefault();
     setActionLoading(true);
