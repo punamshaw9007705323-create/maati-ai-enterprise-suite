@@ -704,7 +704,7 @@ export default function App() {
     }
 
     try {
-      const res = await fetch(`http://127.0.0.1:8000/api/v1/surveillance/verify/${id}`, {
+      const res = await fetch(`https://maati-ai-backend.onrender.com/api/v1/surveillance/verify/${id}`, {
         method: 'POST',
         headers: { Authorization: `Bearer ${token}` }
       });
@@ -764,7 +764,7 @@ export default function App() {
     try {
       const formData = new FormData();
       formData.append("file", file);
-      const response = await fetch("http://127.0.0.1:8000/api/v1/detect-disease", {
+      const response = await fetch("https://maati-ai-backend.onrender.com/api/v1/detect-disease", {
         method: "POST",
         body: formData
       });
@@ -800,7 +800,7 @@ export default function App() {
     e.preventDefault();
     setActionLoading(true);
     try {
-      const res = await fetch('http://127.0.0.1:8000/api/v1/recommend-crop', {
+      const res = await fetch('https://maati-ai-backend.onrender.com/api/v1/recommend-crop', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(formData),
