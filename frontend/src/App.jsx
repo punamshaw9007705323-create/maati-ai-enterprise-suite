@@ -260,7 +260,18 @@ export default function App() {
     }
   };
 
-  const [currentPage, setCurrentPage] = useState('home');
+  const [currentPage, setCurrentPage] = useState(() => {
+  try {
+    return sessionStorage.getItem('maati_current_page') || 'home';
+  } catch {
+    return 'home';
+  }
+});
+useEffect(() => {
+  try {
+    sessionStorage.setItem('maati_current_page', currentPage);
+  } catch {}
+}, [currentPage]);
   const [activeToolTab, setActiveToolTab] = useState('disease');
 
   // ROLE-BASED ACCESS STATE
