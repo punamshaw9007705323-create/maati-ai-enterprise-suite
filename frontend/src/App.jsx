@@ -660,7 +660,7 @@ export default function App() {
 
       let verifiedIncidents = [];
       try {
-        const backendResponse = await fetch('http://127.0.0.1:8000/api/v1/surveillance/hotspots');
+        const backendResponse = await fetch('https://maati-ai-backend.onrender.com/api/v1/surveillance/hotspots');
         if (backendResponse.ok) {
           const backendData = await backendResponse.json();
           if (backendData.status === 'SUCCESS' && Array.isArray(backendData.incidents)) verifiedIncidents = backendData.incidents.map(item => ({ ...item, source: 'FIELD / BACKEND' }));
